@@ -1,11 +1,18 @@
 <template>
   <div id="app">
     <h2>Todo List App Simple</h2>
+
     <TodoInput  @add-a-todo="addATodo" @what-is-key="whatIsKey" @todo-input="updateInput" :todoInput="todoInput" :msg="msg" />
+    
     <Errors :errors="errors" />
+
+
     <TodoList>
-        <TodoItem @delete-todo="deleteTodo" v-for="todo in todos" :todo="todo"/>
+        <TodoItem @isCompleted="completedStatusUpdate" @delete-todo="deleteTodo" v-for="todo in todos" :key="todo.id" :todo="todo"/>
     </TodoList>
+
+
+
     <footer id="footer">
       <h5>About</h5>
       <div>@Author: Le Quoc Hung</div>
@@ -37,7 +44,20 @@ export default {
     }
   },
   methods: {
+    completedStatusUpdate(data){
+      // update status
+      console.log('event completedStatusUpdate');
+      console.log(data);
+      this.todos.map((todo) => {
+        if(todo.id === data.id){
+          todo.completed = data.completed
+          console.log(this.todos);
+        }
+      })
+    },
     addATodo() {
+      if(this.errors.todoInput !== '') this.errors.todoInput = '' 
+
       if (this.todoInput === '') {
         this.errors.todoInput = 'Please type a todo'
         return
@@ -51,7 +71,21 @@ export default {
       this.todoInput = ''
     },
     deleteTodo(id) {
-      this.todos = this.todos.filter((todo) => todo.id !== id)
+      // find todo with id
+      let todo = this.todos.find((todo) => todo.id === id)
+      if (!todo) {
+        this.errors.message = 'Todo not found'
+        return
+      }
+      todo.completed = false
+      todo = null
+      // remove todo with id
+      this.todos.forEach((todo, index) => {
+        if (todo.id === id) {
+          this.todos.splice(index, 1)
+        }
+      })
+      console.log(this.todos);
     },
     updateInput(value) {
       this.todoInput = value

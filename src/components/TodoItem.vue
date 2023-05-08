@@ -10,7 +10,7 @@
       >
         Deleted
       </button>
-      <input @click="todo.completed = !todo.completed" type="checkbox" name="isCompleted" />
+      <input @change="$emit('isCompleted', {completed:$event.target.checked, id: todo.id})" type="checkbox" name="isCompleted" />
     </div>
   </li>
 </template>
@@ -21,7 +21,7 @@ export default {
       type: Object,
       required: true
     }
-  }
+  },
 }
 </script>
 <style>
