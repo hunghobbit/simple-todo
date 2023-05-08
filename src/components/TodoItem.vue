@@ -1,7 +1,7 @@
 <template>
   <li>
     <label :class="{ completed: todo.completed }" for="">{{ todo.title }}</label>
-    <div>
+    <div class="hidden" aria-hidden="true">
       <button
         class="button-danger"
         @click="$emit('deleteTodo', todo.id)"
@@ -25,12 +25,23 @@ export default {
 }
 </script>
 <style>
+
 .todo-list ul li {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 10px;
   border-bottom: 1px solid #ccc;
+}
+.todo-list ul li .hidden {
+  visibility: hidden;
+}
+.todo-list ul li:hover{
+  cursor: pointer;
+  background-color: #e8d3f0;
+}
+.todo-list ul li:hover .hidden{
+  visibility: visible;
 }
 .todo-list ul li label {
   cursor: pointer;

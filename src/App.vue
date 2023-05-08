@@ -45,13 +45,9 @@ export default {
   },
   methods: {
     completedStatusUpdate(data){
-      // update status
-      console.log('event completedStatusUpdate');
-      console.log(data);
       this.todos.map((todo) => {
         if(todo.id === data.id){
           todo.completed = data.completed
-          console.log(this.todos);
         }
       })
     },
@@ -85,7 +81,6 @@ export default {
           this.todos.splice(index, 1)
         }
       })
-      console.log(this.todos);
     },
     updateInput(value) {
       this.todoInput = value
