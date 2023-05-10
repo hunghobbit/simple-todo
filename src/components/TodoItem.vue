@@ -10,7 +10,11 @@
       >
         Deleted
       </button>
-      <input @change="$emit('isCompleted', {completed:$event.target.checked, id: todo.id})" type="checkbox" name="isCompleted" />
+      <input
+        @change="$emit('isCompleted', { completed: $event.target.checked, id: todo.id })"
+        type="checkbox"
+        name="isCompleted"
+      />
     </div>
   </li>
 </template>
@@ -21,11 +25,10 @@ export default {
       type: Object,
       required: true
     }
-  },
+  }
 }
 </script>
 <style>
-
 .todo-list ul li {
   display: flex;
   justify-content: space-between;
@@ -36,11 +39,11 @@ export default {
 .todo-list ul li .hidden {
   visibility: hidden;
 }
-.todo-list ul li:hover{
+.todo-list ul li:hover {
   cursor: pointer;
   background-color: #e8d3f0;
 }
-.todo-list ul li:hover .hidden{
+.todo-list ul li:hover .hidden {
   visibility: visible;
 }
 .todo-list ul li label {

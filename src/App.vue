@@ -1,18 +1,52 @@
+<script setup>
+import TodoInput from './components/TodoInput.vue'
+import Errors from './components/Errors.vue'
+import TodoList from './components/TodoList.vue'
+import TodoItem from './components/TodoItem.vue'
+import { useTodoStore } from '../stores/todos.js'
+import { computed, ref } from 'vue'
+
+const msg = ref('What do you want to do?')
+
+const whatIsKey = (key) => {
+  if (key === 'Enter') {
+    todoStore.addATodo()
+  }
+}
+const todoStore = useTodoStore()
+
+const errors = computed(() => todoStore.errors)
+const todos = computed(() => todoStore.todos)
+</script>
 <template>
   <div id="app">
     <h2>Todo List App Simple</h2>
 
-    <TodoInput  @add-a-todo="addATodo" @what-is-key="whatIsKey" @todo-input="updateInput" :todoInput="todoInput" :msg="msg" />
-    
-    <Errors :errors="errors" />
+    <TodoInput
+      @add-a-todo="todoStore.addATodo"
+      @what-is-key="whatIsKey"
+      @todo-input="todoStore.updateInput"
+      :todoInput="todoStore.todoInput"
+      :msg="msg"
+    />
 
-
-    <TodoList>
-        <TodoItem @isCompleted="completedStatusUpdate" @delete-todo="deleteTodo" v-for="todo in todos" :key="todo.id" :todo="todo"/>
-    </TodoList>
-
-
-
+    <Errors
+      v-if="errors.message || errors.todoInput"
+      :errors="errors"
+      :isAutoHidden="true"
+      :isCloseable="false"
+    />
+    <KeepAlive>
+      <TodoList>
+        <TodoItem
+          @isCompleted="todoStore.completedStatusUpdate"
+          @delete-todo="todoStore.deleteTodo"
+          v-for="todo in todos"
+          :key="todo.id"
+          :todo="todo"
+        />
+      </TodoList>
+    </KeepAlive>
     <footer id="footer">
       <h5>About</h5>
       <div>@Author: Le Quoc Hung</div>
@@ -20,81 +54,8 @@
     </footer>
   </div>
 </template>
-<script>
-import TodoInput from './components/TodoInput.vue'
-import Errors from './components/Errors.vue'
-import TodoList from './components/TodoList.vue'
-import TodoItem from './components/TodoItem.vue'
-export default {
-  components: {
-    TodoInput,
-    Errors,
-    TodoList,
-    TodoItem
-  },
-  data() {
-    return {
-      msg: 'Type a todo',
-      todoInput: '',
-      todos: [],
-      errors: {
-        todoInput: '',
-        message: ''
-      }
-    }
-  },
-  methods: {
-    completedStatusUpdate(data){
-      this.todos.map((todo) => {
-        if(todo.id === data.id){
-          todo.completed = data.completed
-        }
-      })
-    },
-    addATodo() {
-      if(this.errors.todoInput !== '') this.errors.todoInput = '' 
-
-      if (this.todoInput === '') {
-        this.errors.todoInput = 'Please type a todo'
-        return
-      }
-      let todo = {
-        id: this.todos.length + 1,
-        title: this.todoInput,
-        completed: false
-      }
-      this.todos.push(todo)
-      this.todoInput = ''
-    },
-    deleteTodo(id) {
-      // find todo with id
-      let todo = this.todos.find((todo) => todo.id === id)
-      if (!todo) {
-        this.errors.message = 'Todo not found'
-        return
-      }
-      todo.completed = false
-      todo = null
-      // remove todo with id
-      this.todos.forEach((todo, index) => {
-        if (todo.id === id) {
-          this.todos.splice(index, 1)
-        }
-      })
-    },
-    updateInput(value) {
-      this.todoInput = value
-    },
-    whatIsKey(key) {
-      if (key === 'Enter') {
-        this.addATodo()
-      }
-    }
-  }
-}
-</script>
 <style>
-h2{
+h2 {
   text-align: center;
 }
 .button-danger {
@@ -115,7 +76,7 @@ h2{
   height: calc(100vh - 75px);
 }
 /* absolute footer */
-footer#footer{
+footer#footer {
   position: absolute;
   left: 0;
   right: 0;
