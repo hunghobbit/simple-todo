@@ -1,30 +1,32 @@
-<template lang="">
-  <div class="inputs">
+<template>
+  <form
+    @submit.prevent="
+      useTodoStore().addATodo(todoInput);
+      todoInput = '';
+      useTodoStore().saveTodos();
+    "
+    class="inputs"
+    method="post"
+  >
     <input
-      v-bind:value="todoInput"
-      v-on:input="$emit('todoInput', $event.target.value)"
+      v-model="todoInput"
       :placeholder="msg"
       type="text"
-      name=""
-      id=""
-      @keypress="$emit('whatIsKey', $event.key)"
+      name="todo-input"
+      id="todo-input"
+      accessKey="Enter"
     />
-    <button type="button" @click="$emit('addATodo')">Add</button>
-  </div>
+    <button type="submit" accessKey="Enter">Add</button>
+  </form>
 </template>
-<script>
-export default {
-  props: {
-    todoInput: {
-      type: String,
-      required: true
-    },
-    msg: {
-      type: String,
-      required: true
-    }
-  }
-}
+<script setup>
+import { ref } from 'vue'
+import { useTodoStore } from '../../stores/todos'
+defineProps({
+  msg: String
+})
+console.log(document.forms)
+const todoInput = ref('')
 </script>
 <style>
 .inputs {

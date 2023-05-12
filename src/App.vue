@@ -7,46 +7,26 @@ import { useTodoStore } from '../stores/todos.js'
 import { computed, ref } from 'vue'
 
 const msg = ref('What do you want to do?')
-
-const whatIsKey = (key) => {
-  if (key === 'Enter') {
-    todoStore.addATodo()
-  }
-}
+// stores
 const todoStore = useTodoStore()
+todoStore.loadTodos()
 
-const errors = computed(() => todoStore.errors)
 const todos = computed(() => todoStore.todos)
+const errors = computed(() => todoStore.errors)
+console.log(todoStore)
+console.log(todos)
+console.log(errors)
 </script>
 <template>
   <div id="app">
     <h2>Todo List App Simple</h2>
 
-    <TodoInput
-      @add-a-todo="todoStore.addATodo"
-      @what-is-key="whatIsKey"
-      @todo-input="todoStore.updateInput"
-      :todoInput="todoStore.todoInput"
-      :msg="msg"
-    />
+    <TodoInput :msg="msg" />
 
-    <Errors
-      v-if="errors.message || errors.todoInput"
-      :errors="errors"
-      :isAutoHidden="true"
-      :isCloseable="false"
-    />
-    <KeepAlive>
-      <TodoList>
-        <TodoItem
-          @isCompleted="todoStore.completedStatusUpdate"
-          @delete-todo="todoStore.deleteTodo"
-          v-for="todo in todos"
-          :key="todo.id"
-          :todo="todo"
-        />
-      </TodoList>
-    </KeepAlive>
+    <Errors v-if="errors.message || errors.todoInput" />
+    <TodoList>
+      <TodoItem v-for="todo in useTodoStore().todos" :key="todo.id" :todo="todo" />
+    </TodoList>
     <footer id="footer">
       <h5>About</h5>
       <div>@Author: Le Quoc Hung</div>

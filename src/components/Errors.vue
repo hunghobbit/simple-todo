@@ -7,14 +7,28 @@
   </div>
 </template>
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, computed, onUnmounted, onUpdated } from 'vue'
+import { useTodoStore } from '../../stores/todos'
+const errors = computed(() => useTodoStore().errors)
 
-defineProps(['errors', 'isAutoHidden'])
 onMounted(() => {
   setTimeout(() => {
     document.querySelector('.errors').style.display = 'none'
   }, 5000)
+  // clear errors
 })
+onUnmounted(() => {
+  console.log('Errors element is unmounted!')
+})
+onBeforeUpdate(() => {
+  console.log('Errors element is about to update!')
+}),
+  onUpdated(() => {
+    console.log('Errors element is updated!')
+  }),
+  onBeforeUnmount(() => {
+    console.log('Errors element is about to be unmounted!')
+  })
 </script>
 <style>
 @keyframes fadeIn {
