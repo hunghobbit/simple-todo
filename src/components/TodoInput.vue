@@ -1,22 +1,15 @@
 <template>
-  <form
-    @submit.prevent="
-      useTodoStore().addATodo(todoInput);
-      todoInput = '';
-      useTodoStore().saveTodos();
-    "
-    class="inputs"
-    method="post"
-  >
+  <form class="inputs" @submit.prevent="addTodo">
+    <label class="visually-hidden" for="todo-input">New todo</label>
     <input
       v-model="todoInput"
       :placeholder="msg"
       type="text"
       name="todo-input"
       id="todo-input"
-      accessKey="Enter"
+      autocomplete="off"
     />
-    <button type="submit" accessKey="Enter">Add</button>
+    <button class="primary-button" type="submit">Add task</button>
   </form>
 </template>
 <script setup>
@@ -25,26 +18,40 @@ import { useTodoStore } from '../../stores/todos'
 defineProps({
   msg: String
 })
-console.log(document.forms)
+
+const todoStore = useTodoStore()
 const todoInput = ref('')
+
+const addTodo = () => {
+  if (todoStore.addATodo(todoInput.value)) todoInput.value = ''
+}
 </script>
-<style>
+<style scoped>
 .inputs {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.65rem;
 }
 .inputs input {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  margin-right: 10px;
+  min-width: 0;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: 0.85rem;
+  background: var(--paper);
+  color: var(--ink);
+  font: inherit;
+  outline: none;
+  transition: border-color 160ms ease, box-shadow 160ms ease;
 }
-.inputs button {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background: #ccc;
-  cursor: pointer;
+
+.inputs input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+@media (max-width: 520px) {
+  .inputs {
+    grid-template-columns: 1fr;
+  }
 }
 </style>
