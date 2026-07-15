@@ -13,6 +13,11 @@ todoStore.loadTodos()
 
 const todos = computed(() => todoStore.todos)
 const errors = computed(() => todoStore.errors)
+const completedTodos = (() => todos.filter(todo => todo.isCompleted))
+
+const deleteCompletedTodos = () => {
+    completedTodos.forEach(td => todoStore.deleteTodo(td.id));
+}
 console.log(todoStore)
 console.log(todos)
 console.log(errors)
