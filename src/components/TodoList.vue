@@ -10,7 +10,7 @@
 .todo-list {
   margin: 0 auto;
   margin-top: 20px;
-  width: 50%;
+  width: min(50%, 720px);
   height: 55vh;
   overflow-y: auto;
 }
@@ -18,5 +18,10 @@
   list-style: none;
   padding: 0;
   width: 100%;
+}
+@media (max-width: 768px) {
+  .todo-list {
+    width: calc(100% - 32px);
+  }
 }
 </style>

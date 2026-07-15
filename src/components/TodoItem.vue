@@ -86,7 +86,16 @@ const completedStatusUpdate = (data) => {
   opacity: 0.5;
 }
 .todo-list ul li label {
+  flex: 1;
+  min-width: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
   cursor: pointer;
+}
+.todo-list ul li .hidden {
+  flex-shrink: 0;
+  margin-left: 12px;
 }
 .todo-list ul li label.completed {
   text-decoration: line-through;
