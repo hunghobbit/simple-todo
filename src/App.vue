@@ -69,5 +69,11 @@ footer#footer {
   bottom: 0;
   text-align: center;
 }
-
+.delete-completed-todos {
+    padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background: #ccc;
+  cursor: pointer;
+}
 </style>
