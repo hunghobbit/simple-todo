@@ -30,6 +30,7 @@ console.log(errors)
 
     <Errors v-if="errors.message || errors.todoInput" />
     <TodoList>
+      <button @click="deleteCompletedTodos()" class="delete-completed-todos" type="button">Delete Completed Todos</button>
       <TodoItem v-for="todo in useTodoStore().todos" :key="todo.id" :todo="todo" />
     </TodoList>
     <footer id="footer">
@@ -68,4 +69,5 @@ footer#footer {
   bottom: 0;
   text-align: center;
 }
+
 </style>
